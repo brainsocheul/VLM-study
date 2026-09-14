@@ -23,33 +23,78 @@ Topics include:
 - Inspecting model output probabilities / confidence-related values
 
 
-### Exploratory Analysis
+## Exploratory Analysis
 
-#### VLM Output Consistency and Confidence
+### VLM Performance on SGMRI-VQA-fixed
 
-I conducted a small exploratory analysis in Google Colab to better understand
-how much confidence can be placed in VLM outputs.
+I conducted a small-scale exploratory evaluation using the **SGMRI-VQA**
+dataset to better understand how a VLM responds to medical visual question
+answering tasks.
 
-The notebook examines examples such as:
+Rather than generating new prompts, I used the questions provided in the dataset
+without modification.
 
-- how responses change across similar prompts
-- consistency of answers across repeated queries
-- model behavior with multiple visual inputs
-- the relationship between generated answers and available probability/confidence information
+The dataset contained two question types:
 
-The goal was not to establish the reliability of VLMs statistically,
-but to understand practical limitations that may not be obvious from simply running inference.
+1. **Abnormality detection**
+   - Whether the given image contains an abnormal finding.
+
+2. **Abnormality localization**
+   - Where the abnormal finding is located.
+
+
+### Evaluation Procedure
+
+The evaluation followed a two-stage procedure.
+
+For each image, the model was first asked whether an abnormality was present.
+
+The localization question was asked only when:
+
+- an abnormality was actually present in the image, and
+- the model correctly answered that an abnormality was present.
+
+Therefore, the second-stage analysis evaluates localization performance
+**conditional on successful abnormality detection**, rather than the model's
+overall ability to identify and localize abnormalities.
+
+
+### What I Examined
+
+The notebook was used to inspect:
+
+- whether the model could correctly recognize the presence of an abnormality
+- how the model described the location of an abnormal finding
+- differences between detection and localization performance
+- cases in which apparently plausible answers did not match the reference answer
+- the extent to which model outputs appeared consistent with the provided labels
+
+
+### Scope and Limitations
+
+This was intended as an exploratory exercise rather than a formal benchmark of
+medical VLM performance.
+
+In particular:
+
+- the original dataset questions were used without prompt optimization
+- only two question types were examined
+- localization was evaluated only among cases that passed the first-stage detection step
+- therefore, localization results should not be interpreted as unconditional
+  localization accuracy
+- no conclusions about general clinical reliability can be drawn from this analysis
 
 
 ## What I Learned
 
-Through these exercises, I became more familiar with:
+Through the exercises and the SGMRI-VQA-fixed analysis, I became more familiar with:
 
-- how visual and textual inputs are passed to a VLM
-- how model outputs can vary depending on prompt formulation and input structure
-- why an apparently confident model response should not automatically be interpreted as a reliable answer
-- the difference between qualitative observations and conclusions that would require systematic evaluation
-- practical considerations when designing an evaluation of model reliability
+- how visual question answering can be structured as separate detection and localization tasks
+- how performance at an earlier stage can affect which samples are evaluated at a later stage
+- why conditional evaluation results must be distinguished from overall model performance
+- how a model can produce clinically plausible-sounding answers that still differ from the reference answer
+- why qualitative observations are not sufficient to establish the reliability of a medical VLM
+- practical issues that arise when designing an evaluation pipeline for VLM outputs
 
 
 ## Repository Structure
