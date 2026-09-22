@@ -85,18 +85,6 @@ In particular:
 - no conclusions about general clinical reliability can be drawn from this analysis
 
 
-## What I Learned
-
-Through the exercises and the SGMRI-VQA-fixed analysis, I became more familiar with:
-
-- how visual question answering can be structured as separate detection and localization tasks
-- how performance at an earlier stage can affect which samples are evaluated at a later stage
-- why conditional evaluation results must be distinguished from overall model performance
-- how a model can produce clinically plausible-sounding answers that still differ from the reference answer
-- why qualitative observations are not sufficient to establish the reliability of a medical VLM
-- practical issues that arise when designing an evaluation pipeline for VLM outputs
-
-
 ## Repository Structure
 
 ```text
